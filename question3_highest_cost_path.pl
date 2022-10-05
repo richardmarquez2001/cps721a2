@@ -14,16 +14,21 @@
 %%%%% Helper Programs
 % Put any helper programs in the space below
 
+% dfs(+tree, +CurrentCost, +CurrentList, -Highest Cost, -Highest List)
+dfs(none, 0, [], 0, []).
+dfs(tree3(X, LC, L, _, _, _, _), Cost, [X|A], HC, HL) 
+        :- dfs(L, NewCost, A, HC, HL), Cost is NewCost + LC, checkMax(Cost, A, HC, HC, HL).
+dfs(tree3(X, _, _, MC, M, _, _), Cost, [X|A], HC, HL) 
+        :- dfs(M, NewCost, A, HC, HL), Cost is NewCost + MC, checkMax(Cost, A, HC, HC, HL).
+dfs(tree3(X, _, _, _, _, RC, R), Cost, [X|A], HC, HL) 
+        :- dfs(R, NewCost, A, HC, HL), Cost is NewCost + RC, checkMax(Cost, A, HC, HC, HL).
+
+checkMax(Cost, A, CVal, Cost, HL) :- Cost >= CVal.
+checkMax(Cost, A, CVal, HC, HL) :- Cost < CVal.
 
 %%%%% RULE: highestCostPath
 % Add the rule(s) for highestCostPath below
-% simple version, append all elements in a tree
-
-memberTree(E, tree3(E, _, _, _, _, _, _)).
-memberTree(E, tree3(X, LC, L, MC, M, RC, R)) :- not X=E, memberTree(E, L).
-memberTree(E, tree3(X, LC, L, MC, M, RC, R)) :- not X=E, memberTree(E, M).
-memberTree(E, tree3(X, LC, L, MC, M, RC, R)) :- not X=E, memberTree(E, R).
-
+highestCostPath(T, PC, PL) :- dfs(T, _, _, PC, PL).
 
 %%%%% TESTS
 % Below is a test tree, based on the diagram in the assignment
