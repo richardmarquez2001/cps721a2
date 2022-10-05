@@ -17,6 +17,12 @@
 
 %%%%% RULE: highestCostPath
 % Add the rule(s) for highestCostPath below
+% simple version, append all elements in a tree
+
+memberTree(E, tree3(E, _, _, _, _, _, _)).
+memberTree(E, tree3(X, LC, L, MC, M, RC, R)) :- not X=E, memberTree(E, L).
+memberTree(E, tree3(X, LC, L, MC, M, RC, R)) :- not X=E, memberTree(E, M).
+memberTree(E, tree3(X, LC, L, MC, M, RC, R)) :- not X=E, memberTree(E, R).
 
 
 %%%%% TESTS
@@ -36,8 +42,8 @@ testTree(1,
                     ),
             3, tree3(c, 0, none, 0, none, 0, none),  % Middle child of a is c. It is a leaf node
             1, tree3(d,   % Right child of a is d
-                    2, tree(g, 0, none, 0, none,   % Left child of d is g. It has no left or middle child
-                            1, tree(h, 0, none, 0, none, 0, none)),   % The right child of g is h. It is a leaf node
+                    2, tree3(g, 0, none, 0, none,   % Left child of d is g. It has no left or middle child
+                            1, tree3(h, 0, none, 0, none, 0, none)),   % The right child of g is h. It is a leaf node
                     0, none, 0, none  % d has no middle or right children
                     )
         )
