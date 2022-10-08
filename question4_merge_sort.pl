@@ -2,7 +2,7 @@
 % If you only have 2 group members, leave the last space blank
 %
 %%%%%
-%%%%% NAME: 
+%%%%% NAME: Richard Marquez 500952090
 %%%%% NAME:
 %%%%% NAME:
 %
@@ -23,8 +23,6 @@ divideList(listTerm(H, T), N, listTerm(H, F), L) :- divideList(T, N1, F, L), N i
 
 %%%%% RULE: mergeSortedLists
 % Add the rule(s) for mergeSortedLists below
-
-% listTerm(4, listTerm(6, listTerm(8, listTerm(10, empty_list)))), listTerm(3, listTerm(5, listTerm(7, listTerm(9, empty_list))))
 mergeSortedLists(empty_list, L, L). 
 mergeSortedLists(L, empty_list, L).
 mergeSortedLists(listTerm(H1, T1), listTerm(H2, T2), listTerm(H1, L)) :- H1 =< H2, mergeSortedLists(T1, listTerm(H2, T2), L).
@@ -36,41 +34,24 @@ mergeSortedLists(listTerm(H1, T1), listTerm(H2, T2), listTerm(H2, L)) :- H2 < H1
 
 %%%%% RULE: mergeSort
 % Add the rule(s) for mergeSort below
-%  python version
-% source: https://developer.nvidia.com/blog/merge-sort-explained-a-data-scientists-algorithm-guide/#:~:text=In%20the%20context%20of%20sorting,further%20to%20their%20smaller%20parts.
-% def merge_sort(list: [int]):
-%     list_length = len(list)
-    
-%     if list_length == 1:
-%         return list
-    
-%     mid_point = list_length // 2
-    
-%     left_half = merge_sort(list[:mid_point])
-%     right_half = merge_sort(list[mid_point:])
-    
-%     return merge(left_half, right_half)
-% mergeSort(ListTerm, SortedListTerm) :- listLength(ListTerm, Length), Mid is Length // 2, divideList(ListTerm, Mid, LeftList, RightList), 
-        
-% mergeSortedLists(mergeSort)
-% mergeSort(ListTerm, SortedListTerm) 
 
-% merge(LeftList, RightList, MergedList) 
-
-
-
+% Base Case 1: The list is empty, so you return an empty list.
 mergeSort(empty_list, empty_list).
-mergeSort(ListTerm, SortedListTerm) :-
-    % list_length = len(list), mid_point == list_length // 2
 
-    % get left and right list
-    divideList(ListTerm, Mid, LeftList, RightList), 
+% Base Case 2: The list has only one element, so you return the list.
+mergeSort(listTerm(H, empty_list), listTerm(H, empty_list)).
 
-    % % left_half = merge_sort(..) , right_half = merge_sort(...)
-    % mergeSort(LeftList, LeftHalf), mergeSort(RightList, RightHalf),
+% Recursive Case
+mergeSort(listTerm(H, T), SortedList) 
 
-    % return merge(left_half, right_half)
-    mergeSortedLists(mergeSort(LeftHalf), mergeSort(RightHalf), SortedListTerm).
+    % Get the midpoint and divide the list into two halves.
+    :- listLength(listTerm(H, T), List), Mid is List // 2, divideList(listTerm(H, T), Mid, FirstHalf, SecondHalf), 
+        
+    % Recursively call mergeSort on the two halves.
+    mergeSort(FirstHalf, FirstHalfOutput), mergeSort(SecondHalf, SecondHalfOutput), 
+        
+    % Merge the two halves together.
+    mergeSortedLists(FirstHalfOutput, SecondHalfOutput, SortedList).
 
 %%%%% END
 % DO NOT PUT ANY ATOMIC PROPOSITIONS OR LINES BELOW

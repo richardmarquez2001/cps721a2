@@ -2,7 +2,7 @@
 % If you only have 2 group members, leave the last space blank
 %
 %%%%%
-%%%%% NAME: 
+%%%%% NAME: Richard Marquez 500952090
 %%%%% NAME:
 %%%%% NAME:
 %
@@ -14,46 +14,44 @@
 %%%%% Helper Programs
 % Put any helper programs in the space below
 
-% THIS CODE IS CURRENTLY ABLE TO OUTPUT ALL COSTS AND PATHS, YOU JUST NEED TO IMPLEMENT A WAY TO GET THE MAX OF THEM
-
-% dfs(+tree, +CurrentCost, +CurrentList, -Highest Cost, -Highest List)
-
-% Base Case 1: CurrentList is empty, so CurrentCost becomes empty and the HighestCost/HighestList are 0 and [] respectively.
-% Note this is only used for testing purposes (ie. empty tree), in an input that has more than one node, this case shouldn't be hit.
-dfs(none, 0, [], 0, []).
-
-% ----
-% Base Case 2: Reached terminal node, compare current cost and current list to HC and HL
-
-% Base Case 2.1: After reaching a terminal node, the cost of the path is lower than the highest. Do not update value, return previous original.
-dfs(tree3(X, _, none, _, none, _, none), Cost, _, HC, _) :- Cost < HC.
-
-% Base Case 2.2: 
-dfs(tree3(X, _, none, _, none, _, none), Cost, [X|A], HC, _) :- Cost >= HC, dfs(none, _, _, Cost, [X|A]).
-
-% Recursive Clause 1: Recurse through the left subtree
-dfs(tree3(X, LC, L, _, _, _, _), Cost, [X|A], HC, HL) 
-        :- dfs(L, NewCost, A, HC, HL), Cost is NewCost + LC.
-
-% Recursive Clause 2: Recurse through the middle subtree
-dfs(tree3(X, _, _, MC, M, _, _), Cost, [X|A], HC, HL) 
-        :- dfs(M, NewCost, A, HC, HL), Cost is NewCost + MC.
-
-% Recursive Clause 3: Recurse through the right subtree
-dfs(tree3(X, _, _, _, _, RC, R), Cost, [X|A], HC, HL) 
-        :- dfs(R, NewCost, A, HC, HL), Cost is NewCost + RC.
-
-
-
-% Clause 1: Current Cost is less than the CVal, nothing changes.
-% checkMax(CurrentCost, CurrentList, HighestCost, HighestList) :- CurrentCost < HighestCost.
-
-% Clause 2: Current cost is greater than HighestCost, call checkMax again with the updated values.
-% checkMax(CurrentCost, CurrentList, HighestCost, CurrentList) :- CurrentCost >= HighestCost, checkMax(_, _, CurrentCost, CurrentList).
+% simple program to check whether X is bigger than Y and Z.
+isBigger(X, Y, Z) :- X >= Y, X >= Z.
 
 %%%%% RULE: highestCostPath
 % Add the rule(s) for highestCostPath below
-highestCostPath(T, PC, PL) :- 
+
+% Base Case: If the path is empty, return 0 and an empty list.
+highestCostPath(none, 0, []).
+
+% Recursive Case 1: The left path contains the highest cost path.
+highestCostPath(tree3(X, LC, L, MC, M, RC, R), Cost, [X|LPList]) :-
+
+    % Recurse through the children
+    highestCostPath(L, LPCost, LPList), highestCostPath(M, MPCost, _), highestCostPath(R, RPCost, _),
+    
+    % Check if the cost of the left path is the biggest of the three
+Cost is LPCost + LC, isBigger(Cost, MPCost + MC, RPCost + RC).
+    
+
+% Recursive Case 2: The middle path contains the highest cost path.
+highestCostPath(tree3(X, LC, L, MC, M, RC, R), Cost, [X|MPList]) :-
+    
+    % Recurse through the children
+    highestCostPath(L, LPCost, _), highestCostPath(M, MPCost, MPList), highestCostPath(R, RPCost, _),
+    
+    % Check if the cost of the middle path is the biggest of the three
+    Cost is MPCost + MC, isBigger(Cost, LPCost + LC, RPCost + RC).
+    
+
+% Recursive Case 3: The right path contains the highest cost path.
+highestCostPath(tree3(X, LC, L, MC, M, RC, R), Cost, [X|RPList]) :-
+    
+    % Recurse through the children
+    highestCostPath(L, LPCost, _), highestCostPath(M, MPCost, _), highestCostPath(R, RPCost, RPList),
+
+    % Check if the cost of the right path is the biggest of the three
+    Cost is RPCost + RC, isBigger(Cost, LPCost + LC, MPCost + MC).
+
 %%%%% TESTS
 % Below is a test tree, based on the diagram in the assignment
 % You can use it in a query as follows:
