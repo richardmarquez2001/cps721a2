@@ -3,8 +3,8 @@
 %
 %%%%%
 %%%%% NAME: Richard Marquez 500952090
-%%%%% NAME:
-%%%%% NAME:
+%%%%% NAME: Ethan Hou 500962917
+%%%%% NAME: Benjamin Nguyen 500952090
 %
 % Add the required rules in the corresponding sections. 
 % If you put the rules in the wrong sections, you may lose marks.
